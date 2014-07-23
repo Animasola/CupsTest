@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Contacts(models.Model):
+class Contact(models.Model):
     first_name = models.CharField(max_length=50, verbose_name="Name")
     last_name = models.CharField(max_length=75, verbose_name="Last Name")
     birth_date = models.DateField(
