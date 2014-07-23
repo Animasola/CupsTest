@@ -11,3 +11,6 @@ run:
 	
 shell:
 	PYTHONPATH=`pwd` DJANGO_SETTINGS_MODULE=cups_profile.settings $(MANAGE) shell
+
+test:
+	PYTHONPATH=`pwd` DJANGO_SETTINGS_MODULE=cups_profile.settings $(MANAGE) test my_info
