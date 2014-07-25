@@ -13,7 +13,6 @@ from my_info.forms import ContactForm
 
 
 @require_GET
-@login_required
 @render_to('my_info/home.html')
 def info_page(request):
     my_contacts = get_object_or_404(Contact, pk=1)

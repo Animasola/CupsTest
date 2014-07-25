@@ -2,6 +2,10 @@
 
 {% block title %}Contacts Edit Page{% endblock %}
 
+{% block extra_js %}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/edit_contacts_page.js"></script>
+{% endblock %}
+
 {% block body %}
 
 <form id="editmyinfo" enctype="multipart/form-data" action="#" method="POST">
