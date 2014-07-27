@@ -65,12 +65,8 @@ jQuery(function ($) {
                 }
             }
             myinfo.edit_contacts.$message.text( e_msg ).fadeIn("slow");
-
         }
-
     };
-
-
 
     myinfo.edit_contacts.init();
 
