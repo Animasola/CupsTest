@@ -1,3 +1,3 @@
 #!/bin/sh
 
-python manage.py collectstatic -c --noinput
+python manage.py collectstatic --noinput
