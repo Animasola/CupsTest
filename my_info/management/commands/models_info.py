@@ -15,6 +15,6 @@ class Command(BaseCommand):
                     model.model_class().objects.count()
                 )
                 self.stdout.write(out)
-                self.stderr.write('Error: %s' % out)
+                self.stderr.write('error: %s' % out)
         except:
             DatabaseError
