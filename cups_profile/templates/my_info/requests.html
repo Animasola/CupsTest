@@ -9,6 +9,7 @@
         <th>Type</th>
         <th>Requested Url</th>
         <th>From IP</th>
+        <th>Priority</th>
         <th>Timestamp</th>
     </thead>
     <tbody>
@@ -17,6 +18,7 @@
             <td>{{ request.request_type }}</td>
             <td>{{ request.url }}</td>
             <td>{{ request.ip }}</td>
+            <td> {{ request.priority }}</td>
             <td>{{ request.timestamp }}</td>
         </tr>
         {% endfor %}
