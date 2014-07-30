@@ -40,6 +40,7 @@ class MyInfoViewsTests(TestCase):
     def test_request_logger(self):
         # shouldn't be any logged requests yet
         logged_requests = LoggedRequest.objects.all()
+
         self.assertEquals(logged_requests.count(), 0)
         # only GET requests allowed
         post_response = self.client.post(reverse('logged_requests_page'))
@@ -49,6 +50,11 @@ class MyInfoViewsTests(TestCase):
         # should be 2 requests in db
         logged_requests = LoggedRequest.objects.all()
         self.assertEquals(logged_requests.count(), 2)
+
+        chk_priority_request = LoggedRequest.objects.all().order_by('timestamp')[0]
+        # check default value of priority is 0
+        self.assertEquals(chk_priority_request.priority, 0)
+
         # two requests should be displayed on page
         self.assertContains(
             get_response,
@@ -59,6 +65,8 @@ class MyInfoViewsTests(TestCase):
         # only 10 first requests are displayed on page
         for i in xrange(20):
             if i == 19:
+                chk_priority_request.priority = 5
+                chk_priority_request.save()
                 final_response = self.client.get(reverse('logged_requests_page'))
             else:
                 self.client.get(reverse('login'))
@@ -78,6 +86,10 @@ class MyInfoViewsTests(TestCase):
         self.assertEquals(
             LoggedRequest.objects.all().count(),
             22)
+        # check changed priority to the first request
+        first_request_in_response = final_response.context['requests'][0]
+        self.assertEquals(first_request_in_response.priority, 5)
+        self.assertEquals(first_request_in_response, chk_priority_request)
 
 
 class ContactsEditPageTestCase(TestCase):
