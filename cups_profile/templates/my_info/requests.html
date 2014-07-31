@@ -4,6 +4,15 @@
 
 {% block body %}
 
+<h5>Sorting:</h5>
+
+
+<p>
+{% for key, value in sorting.items %}
+    <a class="{% if key == active %}selected-sorting{% endif %}" href="{% url logged_requests_page %}?ordering={{ key }}">{{ value }}</a>
+{% endfor %}
+</p>
+
 <table class="requests-table">
     <thead>
         <th>Type</th>

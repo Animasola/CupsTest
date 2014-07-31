@@ -58,7 +58,7 @@ class MyInfoViewsTests(TestCase):
         # two requests should be displayed on page
         self.assertContains(
             get_response,
-            reverse('logged_requests_page'),
+            reverse('logged_requests_page') + '</td>',
             count=2,
             status_code=200)
         # making 20 requests and making sure
@@ -73,7 +73,7 @@ class MyInfoViewsTests(TestCase):
         # should still be present first two records
         self.assertContains(
             final_response,
-            reverse('logged_requests_page'),
+            reverse('logged_requests_page') + '</td>',
             count=2,
             status_code=200)
         # should be only 8 requests to login page displayed
@@ -90,6 +90,46 @@ class MyInfoViewsTests(TestCase):
         first_request_in_response = final_response.context['requests'][0]
         self.assertEquals(first_request_in_response.priority, 5)
         self.assertEquals(first_request_in_response, chk_priority_request)
+
+    def test_requests_sorting(self):
+        for i in xrange(10):
+            self.client.get(reverse('login'))
+        first_request = LoggedRequest.objects.all().order_by('timestamp')[0]
+        hiest_priority_request = LoggedRequest.objects.all().order_by('timestamp')[1]
+        hiest_priority_request.priority = 10
+        hiest_priority_request.save()
+
+        # checking timestamp ASC sorting
+        url = '%s?ordering=%s' % (reverse('logged_requests_page'), 'timestamp')
+        response = self.client.get(url)
+        self.assertEquals(
+            response.context['requests'][0],
+            first_request
+        )
+        # checking timestamp DESC sorting
+        url = '%s?ordering=%s' % (reverse('logged_requests_page'), '-timestamp')
+        response = self.client.get(url)
+        last_logged_request = LoggedRequest.objects.all().order_by('-timestamp')[0]
+        self.assertEquals(
+            response.context['requests'][0],
+            last_logged_request
+        )
+        # checking priority ASC sorting
+        url = '%s?ordering=%s' % (reverse('logged_requests_page'), 'priority')
+        response = self.client.get(url)
+        lowest_priority_request = LoggedRequest.objects.all().order_by('priority')[0]
+        response = self.client.get(url)
+        self.assertEquals(
+            response.context['requests'][0],
+            lowest_priority_request
+        )
+        # checking priority DESC sorting
+        url = '%s?ordering=%s' % (reverse('logged_requests_page'), '-priority')
+        response = self.client.get(url)
+        self.assertEquals(
+            response.context['requests'][0],
+            hiest_priority_request
+        )
 
 
 class ContactsEditPageTestCase(TestCase):
